@@ -58,19 +58,6 @@ public partial class FormWordle : Form
         if (isDaily)
         {
             // DAILY MODE
-            if (LogDaily.AliJeDanesIgral())
-            {
-                MessageBox.Show(
-                    "You've already played today's word!\n\n" +
-                    "Come back tomorrow for a new word.",
-                    "Daily Wordle",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Information
-                );
-                this.Close();
-                return;
-            }
-
             pravaBeseda = GetDaily(con);
         }
         else
@@ -109,19 +96,22 @@ public partial class FormWordle : Form
     {
         if (tipkovnicaForm == null) return;
 
-        int x = this.Left + (this.Width - tipkovnicaForm.Width) / 2;
+        int x = Left + (Width - tipkovnicaForm.Width) / 2;
+        int y;
 
-        int offset;
-        if (this.WindowState == FormWindowState.Maximized)
+        if (WindowState == FormWindowState.Maximized)
         {
-            offset = (int)(this.Height * 0.25);
+            int konecGrida = row6cell5.Bottom;
+            int spacing = Math.Max(30, (int)(ClientSize.Height * 0.1));
+
+            Point gridTocka = PointToScreen(new Point(0, konecGrida));
+            y = gridTocka.Y + spacing;
         }
         else
         {
-            offset = 10;
+            int offset = 10;
+            y = Bottom - tipkovnicaForm.Height - offset;
         }
-
-        int y = this.Bottom - tipkovnicaForm.Height - offset;
 
         tipkovnicaForm.Location = new Point(x, y);
     }
@@ -183,13 +173,17 @@ public partial class FormWordle : Form
 
         if (guess == pravaBeseda)
         {
-            string poskusi = trenutnaVrsta + 1 == 1 ? "1 try" :
-                            trenutnaVrsta + 1 == 2 ? "2 tries" :
-                            $"{trenutnaVrsta + 1} tries";
+            int poskus = trenutnaVrsta + 1;
+
+            string poskusi = poskus == 1 ? "1 try" :
+                            poskus == 2 ? "2 tries" :
+                            $"{poskus} tries";
 
             labelSporocilo.Text = "WELL DONE!";
             textUgani.Enabled = false;
             btnUgani.Enabled = false;
+
+            Statistika.ZapisZmage(isDaily, poskus);
 
             if (isDaily)
             {
@@ -231,6 +225,8 @@ public partial class FormWordle : Form
             labelSporocilo.Text = $"GAME OVER.";
             textUgani.Enabled = false;
             btnUgani.Enabled = false;
+
+            Statistika.ZapisPoraza(isDaily);
 
             if (isDaily)
             {

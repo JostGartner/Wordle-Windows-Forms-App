@@ -30,9 +30,29 @@ public partial class FormMenu : Form
 
     private void btnDaily_Click(object sender, EventArgs e)
     {
+        if (LogDaily.AliJeDanesIgral())
+        {
+            MessageBox.Show(
+                "You've already played today's word!\n\n" +
+                "Come back tomorrow for a new word.",
+                "Daily Wordle",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Information
+            );
+            return;
+        }
+
         this.Hide();
         FormWordle wordleForm = new FormWordle("Daily");
         wordleForm.FormClosed += (s, args) => this.Show();
         wordleForm.Show();
+    }
+
+    private void btnStats_Click(object sender, EventArgs e)
+    {
+        this.Hide();
+        FormStatistika statsForm = new FormStatistika();
+        statsForm.FormClosed += (s, args) => this.Show();
+        statsForm.Show();
     }
 }

@@ -112,6 +112,7 @@
             btnStats.TabIndex = 4;
             btnStats.Text = "STATS";
             btnStats.UseVisualStyleBackColor = false;
+            btnStats.Click += btnStats_Click;
             // 
             // btnInfinite
             // 
