@@ -68,6 +68,7 @@
             // 
             // tableLayoutPanelStats
             // 
+            tableLayoutPanelStats.BackColor = SystemColors.Window;
             tableLayoutPanelStats.ColumnCount = 7;
             tableLayoutPanelStats.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
             tableLayoutPanelStats.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 140F));
